@@ -1,0 +1,480 @@
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+:root{
+  --red:#E8234A;--blue:#1A3CFF;--yellow:#FFD600;--purple:#4B1FD4;
+  --bg:#0d0820;--card:#1c1535;--card2:#251a40;
+  --muted:rgba(255,255,255,.55);--border:rgba(255,255,255,.08);
+  --font:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --body:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --r:16px
+}
+html,body{width:100%;overflow-x:hidden;background:var(--bg);color:#fff;font-family:var(--body);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+.app{width:100%;max-width:100%;padding-bottom:72px}
+
+/* TOPBAR */
+.topbar{width:100%;background:linear-gradient(140deg,#4B1FD4 0%,#E8234A 55%,#ff7340 100%);padding:20px 16px 52px;position:relative;overflow:hidden}
+.topbar::before{content:'';position:absolute;width:180px;height:180px;background:#1A3CFF;border-radius:50%;top:-70px;right:-50px;opacity:.4}
+.topbar::after{content:'';position:absolute;width:80px;height:80px;background:#FFD600;border-radius:50%;bottom:-20px;left:20px;opacity:.3}
+.t-inner{position:relative;z-index:1}
+.t-label{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:4px}
+.t-kelas{font-family:var(--font);font-size:30px;font-weight:800;color:#fff;background:transparent;border:none;outline:none;width:100%;border-bottom:2px solid rgba(255,255,255,.25);padding-bottom:2px}
+.t-kelas::placeholder{color:rgba(255,255,255,.35)}
+.t-chips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:4px 11px;font-size:12px;font-weight:500;color:#fff}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 12px;margin-top:-24px;position:relative;z-index:2}
+.stat{border-radius:12px;padding:10px 4px;text-align:center}
+.stat.h{background:#1A3CFF}.stat.i{background:#f97316}.stat.s{background:#E8234A}.stat.a{background:#6b7280}
+.stat-n{font-family:var(--font);font-size:24px;font-weight:800;color:#fff;line-height:1}
+.stat-l{font-size:11px;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.7);text-transform:uppercase;margin-top:2px}
+
+/* DAYS */
+.days-wrap{padding:14px 12px 0}
+.days-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sec-title{font-family:var(--font);font-size:16px;font-weight:700}
+.sec-note{font-size:12px;color:var(--muted)}
+.days-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.days-scroll::-webkit-scrollbar{display:none}
+.dpill{flex-shrink:0;font-family:var(--font);font-size:12px;font-weight:700;padding:7px 13px;border-radius:30px;border:1.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.dpill.on{background:var(--red);border-color:var(--red);color:#fff}
+.dpill .dx{font-size:14px;color:rgba(255,255,255,.35);line-height:1}
+.dpill.on .dx{color:rgba(255,255,255,.6)}
+.dadd{flex-shrink:0;font-family:var(--font);font-size:12px;font-weight:700;padding:7px 14px;border-radius:30px;border:1.5px dashed rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.45);cursor:pointer;white-space:nowrap}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px;margin:10px 12px 0}
+.fl{display:flex;flex-direction:column;gap:10px}
+.fg label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
+.fg input,.fg textarea{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 12px;font-size:14px;color:#fff;font-family:var(--body);width:100%;outline:none}
+.fg input:focus,.fg textarea:focus{border-color:rgba(232,35,74,.6)}
+.fg textarea{resize:none;height:54px;line-height:1.5}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.trow{display:flex;gap:6px;align-items:center}
+.trow input{flex:1}
+.tsep{font-size:13px;color:var(--muted)}
+
+/* STUDENTS */
+.slist{display:flex;flex-direction:column;gap:6px;padding:0 12px;margin-top:10px}
+.sitem{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.ava{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font);font-size:13px;font-weight:700;flex-shrink:0}
+.sname{flex:1;background:transparent;border:none;outline:none;font-size:14px;color:#fff;font-family:var(--body);min-width:0}
+.sname::placeholder{color:rgba(255,255,255,.3)}
+.sbts{display:flex;gap:3px}
+.sbt{width:32px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);font-size:12px;font-weight:700;cursor:pointer;color:rgba(255,255,255,.45);font-family:var(--font);transition:all .15s}
+.sbt.h.on{background:#1A3CFF;border-color:#1A3CFF;color:#fff}
+.sbt.i.on{background:#f97316;border-color:#f97316;color:#fff}
+.sbt.s.on{background:#E8234A;border-color:#E8234A;color:#fff}
+.sbt.a.on{background:#6b7280;border-color:#6b7280;color:#fff}
+.sdel{width:26px;height:26px;border-radius:8px;border:none;background:rgba(255,255,255,.05);color:rgba(255,255,255,.25);cursor:pointer;font-size:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.sdel:active{background:rgba(232,35,74,.25);color:var(--red)}
+
+.add-s{margin:8px 12px 0;background:var(--card2);border:1.5px dashed rgba(255,255,255,.15);border-radius:14px;padding:13px;text-align:center;font-size:14px;color:var(--muted);cursor:pointer;width:calc(100% - 24px)}
+.add-s:active{border-color:var(--yellow);color:var(--yellow)}
+
+/* PHOTOS */
+.pscroll{display:flex;gap:10px;overflow-x:auto;padding:0 12px 4px;scrollbar-width:none;margin-top:10px}
+.pscroll::-webkit-scrollbar{display:none}
+.ptile{flex-shrink:0;width:140px;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--border)}
+.pimg{width:140px;height:95px;object-fit:cover;display:block}
+.pmt{width:140px;height:95px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;color:var(--muted);font-size:12px}
+.pinp{font-size:12px;padding:6px 8px;background:rgba(255,255,255,.06);border:none;border-top:1px solid var(--border);color:#fff;font-family:var(--body);width:100%;outline:none}
+.pcap{font-size:12px;padding:4px 8px 6px;background:transparent;border:none;border-top:1px solid var(--border);color:var(--muted);font-family:var(--body);width:100%;outline:none}
+.pdel{font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;padding:4px 8px 5px;width:100%;text-align:left;font-family:var(--body)}
+.padd{flex-shrink:0;width:80px;height:170px;border-radius:14px;border:1.5px dashed rgba(255,255,255,.18);background:transparent;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;color:rgba(255,255,255,.4);font-size:12px;font-family:var(--body)}
+.padd:active{border-color:var(--yellow);color:var(--yellow)}
+
+/* REKAP */
+.rek-wrap{margin:10px 12px 0;background:var(--card);border-radius:var(--r);border:1px solid var(--border);overflow:hidden}
+.rek-scroll{overflow-x:auto}
+.rek-scroll::-webkit-scrollbar{height:3px}
+.rek-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.rtable{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+.rtable th{padding:9px 10px;font-family:var(--font);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);background:rgba(255,255,255,.03);text-align:center}
+.rtable th:first-child{text-align:left;position:sticky;left:0;background:var(--card);z-index:1;padding-left:14px}
+.rtable td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--border);color:#fff;font-size:13px}
+.rtable td:first-child{text-align:left;position:sticky;left:0;background:var(--card);z-index:1;padding-left:14px}
+.rtable tr:last-child td{border-bottom:none}
+.rpill{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:var(--font)}
+
+/* SETTINGS */
+.set-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:14px;margin:10px 12px 0;display:flex;flex-direction:column;gap:10px}
+
+/* NAV */
+.botnav{position:fixed;bottom:0;left:0;width:100%;background:rgba(13,8,32,.96);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:10px 12px 22px;display:flex;gap:6px;z-index:99}
+.nbtn{flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--border);background:rgba(255,255,255,.05);color:var(--muted);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;text-align:center;transition:all .18s}
+.nbtn.on{background:var(--red);border-color:var(--red);color:#fff}
+
+.gap{height:12px}
+.hidden{display:none!important}
+</style>
+
+<div class="app" id="app">
+
+<div class="topbar">
+  <div class="t-inner">
+    <div class="t-label">Absensi Kelas</div>
+    <input class="t-kelas" id="inp-kelas" value="VII-A" maxlength="20" placeholder="Nama Kelas..." oninput="syncKelas()">
+    <div class="t-chips">
+      <span class="chip" id="chip-sem">Genap 2025/2026</span>
+      <span class="chip" id="chip-guru">Guru: —</span>
+    </div>
+  </div>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="days-wrap">
+  <div class="days-head">
+    <div class="sec-title">Sesi Pertemuan</div>
+    <div class="sec-note" id="dcnt"></div>
+  </div>
+  <div class="days-scroll" id="days-scroll"></div>
+</div>
+
+<div id="tab-absen">
+  <div class="card">
+    <div class="fl">
+      <div class="row2">
+        <div class="fg"><label>Mata Pelajaran</label><input id="i-mapel" type="text" placeholder="cth: Matematika"></div>
+        <div class="fg"><label>Materi</label><input id="i-materi" type="text" placeholder="cth: SPLDV"></div>
+      </div>
+      <div class="row2">
+        <div class="fg"><label>Tanggal</label><input id="i-tgl" type="date"></div>
+        <div class="fg"><label>Jam</label>
+          <div class="trow"><input id="i-mul" type="time"><span class="tsep">–</span><input id="i-sel" type="time"></div>
+        </div>
+      </div>
+      <div class="fg"><label>Guru / Pengajar</label><input id="i-guru" type="text" placeholder="Nama guru..." oninput="document.getElementById('chip-guru').textContent='Guru: '+(this.value||'—')"></div>
+      <div class="fg"><label>Catatan Materi</label><textarea id="i-cat" placeholder="Uraian kegiatan..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:0 12px">
+    <div class="sec-title">Daftar Hadir</div>
+    <div class="sec-note" id="snote"></div>
+  </div>
+  <div class="slist" id="slist"></div>
+  <button class="add-s" onclick="addStu()">+ Tambah Siswa</button>
+
+  <div class="gap"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:0 12px">
+    <div class="sec-title">Dokumentasi</div>
+    <div class="sec-note">Foto kegiatan</div>
+  </div>
+  <div class="pscroll" id="pscroll"></div>
+</div>
+
+<div id="tab-rekap" class="hidden">
+  <div class="gap"></div>
+  <div style="padding:0 12px;display:flex;justify-content:space-between;align-items:center">
+    <div class="sec-title">Rekap Kehadiran</div>
+    <div class="sec-note" id="rnote"></div>
+  </div>
+  <div class="rek-wrap"><div class="rek-scroll"><table class="rtable" id="rtable"></table></div></div>
+</div>
+
+<div id="tab-set" class="hidden">
+  <div class="gap"></div>
+  <div class="set-card">
+    <div class="fg"><label>Nama Kelas</label><input id="s-kelas" type="text" placeholder="Nama kelas..." oninput="document.getElementById('inp-kelas').value=this.value;syncKelas()"></div>
+    <div class="fg"><label>Wali Kelas</label><input id="s-wali" type="text" placeholder="Nama wali kelas..." oninput="lsSave()"></div>
+    <div class="fg"><label>Semester</label><input id="s-sem" type="text" value="Genap 2025/2026" oninput="document.getElementById('chip-sem').textContent=this.value||'—';lsSave()"></div>
+    <div style="margin-top:4px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px">
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">☁️ Sinkron Google Sheets</div>
+      <div class="fg" style="margin-bottom:8px">
+        <label>URL Apps Script</label>
+        <input id="gs-url" type="url" placeholder=https://script.google.com/macros/s/AKfycbwpLJPaJvlKzgwm9DDW_6ugjNsmPp9HwUs-rvc39oLvUqbleGp2sYMR3wLYuE00008s/exec oninput="lsSave()" style="font-size:12px">
+      </div>
+      <div style="display:flex;gap:6px">
+        <button onclick="gsPush()" id="btn-push" style="flex:1;padding:11px;background:rgba(26,60,255,.2);border:1px solid rgba(26,60,255,.4);border-radius:10px;color:#6680ff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--body)">⬆ Simpan ke Sheet</button>
+        <button onclick="gsPull()" id="btn-pull" style="flex:1;padding:11px;background:rgba(75,31,212,.2);border:1px solid rgba(75,31,212,.4);border-radius:10px;color:#a78bfa;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--body)">⬇ Ambil dari Sheet</button>
+      </div>
+      <div id="gs-status" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.4);text-align:center;min-height:18px"></div>
+    </div>
+    <div style="margin-top:4px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px">
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Data Lokal</div>
+      <button onclick="resetData()" style="width:100%;padding:11px;background:rgba(232,35,74,.15);border:1px solid rgba(232,35,74,.35);border-radius:10px;color:#ff6b8a;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--body)">🗑 Reset Semua Data</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="botnav">
+  <button class="nbtn on" id="nb-absen" onclick="goTab('absen')">Absen</button>
+  <button class="nbtn" id="nb-rekap" onclick="goTab('rekap')">Rekap</button>
+  <button class="nbtn" id="nb-set" onclick="goTab('set')">Pengaturan</button>
+</div>
+
+<script>
+const DEFNAMES=["Ahmad Fauzi","Siti Nurhaliza","Budi Santoso","Dewi Rahayu","Eko Prasetyo","Fitri Handayani","Galih Purnomo","Hana Safitri","Irfan Maulana","Jihan Aulia","Kevin Kusuma","Lailatul Fitriah","Muhammad Rizky","Nur Aini","Okta Wibowo"];
+const GRADS=['135deg,#1A3CFF,#4B1FD4','135deg,#E8234A,#4B1FD4','135deg,#f97316,#E8234A','135deg,#4B1FD4,#1A3CFF','135deg,#FFD600,#f97316','135deg,#0F6E56,#1A3CFF','135deg,#D4537E,#4B1FD4'];
+const SBGM={hadir:'rgba(26,60,255,.25)',izin:'rgba(249,115,22,.25)',sakit:'rgba(232,35,74,.25)',alpha:'rgba(107,114,128,.25)'};
+const SCLR={hadir:'#6680ff',izin:'#fdba74',sakit:'#ff6b8a',alpha:'#9ca3af'};
+
+function today(){return new Date().toISOString().slice(0,10)}
+function tNow(off=0){const d=new Date(Date.now()+off*60000);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function fD(s){if(!s)return'?';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('id-ID',{day:'numeric',month:'short'})}
+function ini(n){return(n||'').trim().split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?'}
+
+const LS_KEY='absen_v1';
+const DEFDAYS=[{id:1,tgl:today(),mul:tNow(),sel:tNow(90),mapel:'',materi:'',guru:'',cat:'',stu:DEFNAMES.map(n=>({n,s:null})),ph:[{u:'',c:''}]}];
+let days=JSON.parse(JSON.stringify(DEFDAYS));
+let ai=0,dc=1,tab='absen';
+
+function D(){return days[ai]}
+
+function lsSave(){
+  try{
+    const kelas=document.getElementById('inp-kelas')?.value||'VII-A';
+    const wali=document.getElementById('s-wali')?.value||'';
+    const sem=document.getElementById('s-sem')?.value||'Genap 2025/2026';
+    const gsUrl=document.getElementById('gs-url')?.value||'';
+    localStorage.setItem(LS_KEY,JSON.stringify({days,ai,dc,kelas,wali,sem,gsUrl}));
+  }catch(e){}
+}
+
+function lsLoad(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);
+    if(!raw)return false;
+    const o=JSON.parse(raw);
+    if(o.days&&o.days.length){days=o.days;ai=Math.min(o.ai||0,o.days.length-1);dc=o.dc||o.days.length;}
+    setTimeout(()=>{
+      if(o.kelas){document.getElementById('inp-kelas').value=o.kelas;document.getElementById('s-kelas').value=o.kelas;}
+      if(o.wali)document.getElementById('s-wali').value=o.wali;
+      if(o.sem){document.getElementById('s-sem').value=o.sem;document.getElementById('chip-sem').textContent=o.sem;}
+      if(o.gsUrl)document.getElementById('gs-url').value=o.gsUrl;
+    },80);
+    return true;
+  }catch(e){return false;}
+}
+
+/* ── Google Sheets sync ── */
+function gsStatus(msg,ok){
+  const el=document.getElementById('gs-status');
+  if(!el)return;
+  el.textContent=msg;
+  el.style.color=ok===true?'#4ade80':ok===false?'#ff6b8a':'rgba(255,255,255,.4)';
+}
+
+function gsGetUrl(){
+  const u=(document.getElementById('gs-url')?.value||'').trim();
+  if(!u){alert('Masukkan URL Apps Script dulu di tab Pengaturan.');return null;}
+  return u;
+}
+
+async function gsPush(){
+  const url=gsGetUrl();if(!url)return;
+  saveF();
+  const kelas=document.getElementById('inp-kelas')?.value||'VII-A';
+  const wali=document.getElementById('s-wali')?.value||'';
+  const sem=document.getElementById('s-sem')?.value||'Genap 2025/2026';
+  const payload=JSON.stringify({days,ai,dc,kelas,wali,sem});
+  gsStatus('Menyimpan ke Google Sheets…');
+  document.getElementById('btn-push').disabled=true;
+  try{
+    await fetch(url,{method:'POST',mode:'no-cors',body:payload});
+    gsStatus('✅ Tersimpan ke Google Sheets — '+new Date().toLocaleTimeString('id-ID'),true);
+  }catch(e){
+    gsStatus('❌ Gagal menyimpan: '+e.message,false);
+  }
+  document.getElementById('btn-push').disabled=false;
+}
+
+async function gsPull(){
+  const url=gsGetUrl();if(!url)return;
+  gsStatus('Mengambil data dari Google Sheets…');
+  document.getElementById('btn-pull').disabled=true;
+  try{
+    const res=await fetch(url+'?action=load',{cache:'no-store'});
+    const o=await res.json();
+    if(!o||!o.days||!o.days.length){gsStatus('Sheet masih kosong.',false);document.getElementById('btn-pull').disabled=false;return;}
+    days=o.days;ai=Math.min(o.ai||0,o.days.length-1);dc=o.dc||o.days.length;
+    lsSave();
+    setTimeout(()=>{
+      if(o.kelas){document.getElementById('inp-kelas').value=o.kelas;document.getElementById('s-kelas').value=o.kelas;}
+      if(o.wali)document.getElementById('s-wali').value=o.wali;
+      if(o.sem){document.getElementById('s-sem').value=o.sem;document.getElementById('chip-sem').textContent=o.sem;}
+    },50);
+    loadF();drawDays();drawStu();drawPh();drawStats();
+    gsStatus('✅ Data berhasil dimuat — '+new Date().toLocaleTimeString('id-ID'),true);
+  }catch(e){
+    gsStatus('❌ Gagal mengambil data: '+e.message,false);
+  }
+  document.getElementById('btn-pull').disabled=false;
+}
+
+function resetData(){
+  if(!confirm('Hapus semua data absensi? Tindakan ini tidak bisa dibatalkan.'))return;
+  localStorage.removeItem(LS_KEY);
+  days=JSON.parse(JSON.stringify(DEFDAYS));
+  ai=0;dc=1;
+  document.getElementById('inp-kelas').value='VII-A';
+  document.getElementById('s-kelas').value='VII-A';
+  document.getElementById('s-wali').value='';
+  document.getElementById('s-sem').value='Genap 2025/2026';
+  document.getElementById('chip-sem').textContent='Genap 2025/2026';
+  document.getElementById('chip-guru').textContent='Guru: —';
+  loadF();drawDays();drawStu();drawPh();drawStats();
+  alert('Data berhasil direset.');
+}
+
+function syncKelas(){
+  const v=document.getElementById('inp-kelas').value;
+  const sk=document.getElementById('s-kelas');
+  if(document.activeElement!==sk)sk.value=v;
+  lsSave();
+}
+
+function goTab(t){
+  tab=t;
+  ['absen','rekap','set'].forEach(x=>{
+    document.getElementById('tab-'+x).classList.toggle('hidden',x!==t);
+    document.getElementById('nb-'+x).classList.toggle('on',x===t);
+  });
+  if(t==='rekap')drawRekap();
+}
+
+function saveF(){
+  const d=D();
+  d.tgl=document.getElementById('i-tgl').value;
+  d.mul=document.getElementById('i-mul').value;
+  d.sel=document.getElementById('i-sel').value;
+  d.mapel=document.getElementById('i-mapel').value;
+  d.materi=document.getElementById('i-materi').value;
+  d.guru=document.getElementById('i-guru').value;
+  d.cat=document.getElementById('i-cat').value;
+  lsSave();
+}
+function loadF(){
+  const d=D();
+  document.getElementById('i-tgl').value=d.tgl||today();
+  document.getElementById('i-mul').value=d.mul||tNow();
+  document.getElementById('i-sel').value=d.sel||tNow(90);
+  document.getElementById('i-mapel').value=d.mapel||'';
+  document.getElementById('i-materi').value=d.materi||'';
+  document.getElementById('i-guru').value=d.guru||'';
+  document.getElementById('i-cat').value=d.cat||'';
+  document.getElementById('chip-guru').textContent='Guru: '+(d.guru||'—');
+}
+['i-tgl','i-mul','i-sel','i-mapel','i-materi','i-guru','i-cat'].forEach(id=>{
+  setTimeout(()=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>{saveF();drawDays();});},100);
+});
+
+function addDay(){
+  saveF();dc++;
+  const p=days[days.length-1];
+  const pd=p.tgl?new Date(p.tgl+'T00:00:00'):new Date();
+  pd.setDate(pd.getDate()+7);
+  days.push({id:dc,tgl:pd.toISOString().slice(0,10),mul:p.mul,sel:p.sel,mapel:p.mapel,materi:'',guru:p.guru,cat:'',stu:p.stu.map(s=>({n:s.n,s:null})),ph:[{u:'',c:''}]});
+  ai=days.length-1;
+  loadF();drawDays();drawStu();drawPh();drawStats();
+}
+function delDay(i){
+  if(days.length<=1)return;
+  if(!confirm('Hapus sesi ini?'))return;
+  days.splice(i,1);
+  if(ai>=days.length)ai=days.length-1;
+  loadF();drawDays();drawStu();drawPh();drawStats();
+}
+function swDay(i){saveF();ai=i;loadF();drawDays();drawStu();drawPh();drawStats();}
+
+function drawDays(){
+  const el=document.getElementById('days-scroll');
+  el.innerHTML='';
+  days.forEach((d,i)=>{
+    const w=document.createElement('div');
+    w.style.cssText='display:flex;align-items:center;gap:3px;flex-shrink:0';
+    const p=document.createElement('button');
+    p.className='dpill'+(i===ai?' on':'');
+    p.innerHTML=`Hari ${i+1} · ${fD(d.tgl)}${days.length>1?`<span class="dx" onclick="event.stopPropagation();delDay(${i})">×</span>`:''}`;
+    p.onclick=()=>swDay(i);
+    w.appendChild(p);
+    el.appendChild(w);
+  });
+  const ab=document.createElement('button');
+  ab.className='dadd';ab.textContent='+ Hari Baru';ab.onclick=addDay;
+  el.appendChild(ab);
+  document.getElementById('dcnt').textContent=days.length+' sesi';
+}
+
+function drawStats(){
+  const d=D();const c={hadir:0,izin:0,sakit:0,alpha:0};
+  d.stu.forEach(s=>{if(s.s)c[s.s]++});
+  document.getElementById('stats').innerHTML=
+    ['hadir','izin','sakit','alpha'].map((st,i)=>{
+      const cls=['h','i','s','a'][i];
+      const lbl=['Hadir','Izin','Sakit','Alpha'][i];
+      return`<div class="stat ${cls}"><div class="stat-n">${c[st]}</div><div class="stat-l">${lbl}</div></div>`;
+    }).join('');
+}
+
+function drawStu(){
+  const d=D();
+  const el=document.getElementById('slist');
+  el.innerHTML='';
+  d.stu.forEach((s,i)=>{
+    const item=document.createElement('div');
+    item.className='sitem';
+    const sc=s.s?({hadir:'#1A3CFF',izin:'#f97316',sakit:'#E8234A',alpha:'#6b7280'}[s.s]):'rgba(255,255,255,.06)';
+    item.style.borderLeftColor=sc;
+    item.style.borderLeftWidth=s.s?'3px':'1px';
+    item.innerHTML=`<div class="ava" style="background:linear-gradient(${GRADS[i%GRADS.length]})">${ini(s.n)}</div>
+    <input class="sname" value="${s.n}" placeholder="Nama siswa..." onchange="D().stu[${i}].n=this.value;drawStats();drawStu();lsSave()">
+    <div class="sbts">
+      ${[['H','hadir'],['I','izin'],['S','sakit'],['A','alpha']].map(([l,st])=>`<button class="sbt ${st[0]}${s.s===st?' on':''}" onclick="setSt(${i},'${st}')">${l}</button>`).join('')}
+    </div>
+    <button class="sdel" onclick="delStu(${i})">×</button>`;
+    el.appendChild(item);
+  });
+  document.getElementById('snote').textContent=d.stu.length+' siswa';
+  drawStats();
+}
+function setSt(i,st){const d=D();d.stu[i].s=d.stu[i].s===st?null:st;drawStu();lsSave();}
+function delStu(i){const d=D();if(d.stu.length<=1)return;d.stu.splice(i,1);drawStu();lsSave();}
+function addStu(){D().stu.push({n:'',s:null});drawStu();lsSave();setTimeout(()=>{const els=document.querySelectorAll('.sname');els[els.length-1].focus();},50);}
+
+function drawPh(){
+  const d=D();const el=document.getElementById('pscroll');el.innerHTML='';
+  d.ph.forEach((p,i)=>{
+    const t=document.createElement('div');t.className='ptile';
+    t.innerHTML=(p.u?`<img class="pimg" src="${p.u}" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt="foto"><div class="pmt" style="display:none">📷</div>`:
+      `<div class="pmt"><span style="font-size:22px">📷</span><span>Tempel URL</span></div>`)+
+    `<input class="pinp" type="url" value="${p.u}" placeholder="https://..." oninput="D().ph[${i}].u=this.value;drawPh();lsSave()">
+    <input class="pcap" type="text" value="${p.c}" placeholder="Keterangan..." oninput="D().ph[${i}].c=this.value;lsSave()">
+    <button class="pdel" onclick="delPh(${i})">Hapus foto</button>`;
+    el.appendChild(t);
+  });
+  const a=document.createElement('button');a.className='padd';
+  a.innerHTML='<span style="font-size:24px">+</span><span>Foto</span>';
+  a.onclick=()=>{D().ph.push({u:'',c:''});drawPh();lsSave();};
+  el.appendChild(a);
+}
+function delPh(i){const d=D();if(d.ph.length<=1){d.ph[0]={u:'',c:''};drawPh();lsSave();return;}d.ph.splice(i,1);drawPh();lsSave();}
+
+function drawRekap(){
+  const names=[...new Set(days.flatMap(d=>d.stu.map(s=>s.n)).filter(Boolean))];
+  const tbl=document.getElementById('rtable');
+  if(!names.length){tbl.innerHTML='<tr><td style="padding:14px;color:rgba(255,255,255,.4);font-size:13px">Belum ada data.</td></tr>';return;}
+  let h=`<thead><tr><th>Nama</th>${days.map((_,i)=>`<th>H${i+1}<br><span style="font-size:9px;opacity:.6">${fD(days[i].tgl)}</span></th>`).join('')}<th>H</th><th>I</th><th>S</th><th>A</th></tr></thead><tbody>`;
+  names.forEach(name=>{
+    const c={hadir:0,izin:0,sakit:0,alpha:0};
+    h+=`<tr><td>${name}</td>`;
+    days.forEach(d=>{
+      const s=d.stu.find(x=>x.n===name);const st=s?s.s:null;
+      if(st){c[st]++;h+=`<td><span class="rpill" style="background:${SBGM[st]};color:${SCLR[st]}">${st[0].toUpperCase()}</span></td>`;}
+      else h+=`<td style="color:rgba(255,255,255,.2)">—</td>`;
+    });
+    h+=`<td style="color:#6680ff;font-weight:700">${c.hadir}</td><td style="color:#fdba74">${c.izin||'—'}</td><td style="color:#ff6b8a">${c.sakit||'—'}</td><td style="color:#9ca3af">${c.alpha||'—'}</td></tr>`;
+  });
+  h+='</tbody>';tbl.innerHTML=h;
+  document.getElementById('rnote').textContent=days.length+' sesi · '+names.length+' siswa';
+}
+
+lsLoad();loadF();drawDays();drawStu();drawPh();drawStats();
+</script>
